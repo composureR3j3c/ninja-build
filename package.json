@@ -1,6 +1,7 @@
 {
   "name": "ninja-build",
-  "main": "expo-router/entry",
+  "main": "src/App.js"
+  ,
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
