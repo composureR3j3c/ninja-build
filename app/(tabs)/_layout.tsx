@@ -24,10 +24,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="settings"
+        name="login"
         options={{
-          title: 'Settings',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="gearshape.fill" color={color} />,
+          title: 'Login',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="person.fill" color={color} />,
+        }}
+      />
+       <Tabs.Screen
+        name="welcomeScreen"
+        options={{
+          title: 'Welcome',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="pedal.brake" color={color} />,
         }}
       />
     </Tabs>
