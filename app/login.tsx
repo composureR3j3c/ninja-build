@@ -1,9 +1,13 @@
 import { View, Text, TextInput, Pressable } from "react-native";
 import { useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  function handleGoogleContinue(): void {
+    throw new Error("Function not implemented.");
+  }
 
   return (
     <View className="flex-1 bg-[#F6F7F4] justify-center px-6">
@@ -18,9 +22,25 @@ export default function LoginScreen() {
         <Text className="text-gray-500 mb-8">
           Sign in to continue
         </Text>
+         {/* Create account button */}
+        <Pressable
+          onPress={handleGoogleContinue}
+          className={`rounded-full py-2 my-3 items-center flex-row justify-center
+             justify-content-end
+             border border-[#FFD54F]-700
+  `}
+        >
+          <AntDesign name="google" size={25} color="#FFD54F" style={{ marginRight: 12 }} />
 
-        {/* Email */}
-        <TextInput
+          <Text
+            className={`font-medium text-base`}
+          >
+            Continue with Google
+          </Text>
+        </Pressable>
+
+
+        {/* <TextInput
           placeholder="Email"
           placeholderTextColor="#9CA3AF"
           value={email}
@@ -30,7 +50,6 @@ export default function LoginScreen() {
           className="bg-gray-100 rounded-full px-5 py-4 mb-4 text-gray-900"
         />
 
-        {/* Password */}
         <TextInput
           placeholder="Password"
           placeholderTextColor="#9CA3AF"
@@ -38,21 +57,21 @@ export default function LoginScreen() {
           onChangeText={setPassword}
           secureTextEntry
           className="bg-gray-100 rounded-full px-5 py-4 mb-6 text-gray-900"
-        />
+        /> */}
 
         {/* Login Button */}
-        <Pressable className="bg-[#FFD54F] rounded-full py-4 items-center">
+        {/* <Pressable className="bg-[#FFD54F] rounded-full py-4 items-center">
           <Text className="text-gray-900 font-semibold text-base">
             Log in
           </Text>
         </Pressable>
 
         {/* Footer */}
-        <Pressable className="mt-6">
+        {/* <Pressable className="mt-6">
           <Text className="text-center text-gray-500">
             Forgot your password?
           </Text>
-        </Pressable>
+        </Pressable>  */}
 
       </View>
     </View>

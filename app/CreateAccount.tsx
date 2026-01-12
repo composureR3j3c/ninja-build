@@ -1,5 +1,7 @@
 import { View, Text, TextInput, Pressable } from "react-native";
-import { useState } from "react";
+import { useState } from "react"; import { AntDesign } from "@expo/vector-icons";
+
+
 
 export default function SignupScreen() {
   const [email, setEmail] = useState("");
@@ -17,6 +19,10 @@ export default function SignupScreen() {
     console.log("Creating account...");
   };
 
+  function handleGoogleContinue(): void {
+    throw new Error("Function not implemented.");
+  }
+
   return (
     <View className="flex-1 bg-[#F6F7F4] justify-center px-6">
       <View className="bg-white rounded-3xl p-8 shadow-sm">
@@ -28,23 +34,6 @@ export default function SignupScreen() {
           Start your journey with calm
         </Text>
 
-        <TextInput
-          placeholder="Email"
-          placeholderTextColor="#9CA3AF"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          className="bg-gray-100 rounded-full px-5 py-4 mb-4 text-gray-900"
-        />
-
-        <TextInput
-          placeholder="Password"
-          placeholderTextColor="#9CA3AF"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          className="bg-gray-100 rounded-full px-5 py-4 mb-6 text-gray-900"
-        />
 
         {/* Privacy checkbox */}
         <Pressable
@@ -56,10 +45,9 @@ export default function SignupScreen() {
         >
           <View
             className={`w-5 h-5 rounded-md border mr-3 items-center justify-center
-              ${agreed ? "bg-[#FFD54F] border-[#FFD54F]" : "border-gray-400"}
             `}
           >
-            {agreed && <View className="w-2.5 h-2.5 bg-gray-900 rounded-sm" />}
+            {/* {agreed && <View className="w-2.5 h-2.5 bg-gray-900 rounded-sm" />} */}
           </View>
 
           <Text className="text-gray-600 flex-1 text-sm">
@@ -76,19 +64,23 @@ export default function SignupScreen() {
 
         {/* Create account button */}
         <Pressable
-          onPress={handleCreateAccount}
-          className={`rounded-full py-4 items-center
-            ${agreed ? "bg-[#FFD54F]" : "bg-gray-300"}
-          `}
+          onPress={handleGoogleContinue}
+          className={`rounded-full py-2 my-3 items-center flex-row justify-center
+             justify-content-end
+             border border-[#FFD54F]-700
+  `}
         >
+          <AntDesign name="google" size={25} color="#FFD54F" style={{ marginRight: 12 }} />
+
           <Text
-            className={`font-semibold text-base
-              ${agreed ? "text-gray-900" : "text-gray-500"}
-            `}
+            className={`font-medium text-base
+      ${agreed ? "text-gray-900" : "text-gray-500"}
+    `}
           >
-            Create account
+            Continue with Google
           </Text>
         </Pressable>
+
 
       </View>
     </View>

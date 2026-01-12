@@ -23,7 +23,7 @@ export default function WelcomeScreen() {
       {/* Actions */}
       <View className="space-y-4">
         <Pressable
-          onPress={() => router.push("/login")}
+          onPress={() => router.push("/CreateAccount")}
           className="bg-[#FFD54F] rounded-full py-4 items-center"
         >
           <Text className="text-gray-900 font-semibold text-base">
@@ -32,7 +32,7 @@ export default function WelcomeScreen() {
         </Pressable>
 
         <Pressable
-          onPress={() => router.push("/login")}
+          onPress={() => router.replace("/login")}
           className="rounded-full py-4 items-center border border-gray-300"
         >
           <Text className="text-gray-700 font-medium text-base">
