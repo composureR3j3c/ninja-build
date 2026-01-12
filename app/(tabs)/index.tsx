@@ -12,46 +12,48 @@ const MOODS: { key: Mood; label: string; emoji: string }[] = [
 ];
 
 const ACTIVITIES: Record<Mood, string[]> = {
-  calm: [
-    "5-minute gratitude reflection",
-    "Gentle breathing",
-    "Body scan meditation",
-  ],
-  stressed: [
-    "3-minute breathing reset",
-    "Letting go exercise",
-    "Tension release meditation",
-  ],
-  tired: [
-    "Gentle wake-up breathing",
-    "Mindful stretching",
-    "Energy reset",
-  ],
-  sad: [
-    "Self-compassion meditation",
-    "Emotional check-in",
-    "Kind thoughts practice",
-  ],
-  focused: [
-    "Focus timer (10 min)",
-    "Clarity breathing",
-    "Intentional goal setting",
-  ],
+  calm: ["Gratitude reflection", "Gentle breathing", "Body scan"],
+  stressed: ["Breathing reset", "Letting go", "Tension release"],
+  tired: ["Wake-up breathing", "Mindful stretch", "Energy reset"],
+  sad: ["Self-compassion", "Emotional check-in", "Kind thoughts"],
+  focused: ["Focus timer", "Clarity breathing", "Goal setting"],
 };
+
+const XP_PER_ACTIVITY = 10;
 
 export default function HomeScreen() {
   const [selectedMood, setSelectedMood] = useState<Mood>("calm");
+  const [xp, setXp] = useState(0);
+  const [completed, setCompleted] = useState<string[]>([]);
+
+  const completeActivity = (activity: string) => {
+    if (completed.includes(activity)) return;
+
+    setCompleted([...completed, activity]);
+    setXp((prev) => prev + XP_PER_ACTIVITY);
+  };
 
   return (
     <ScrollView className="flex-1 bg-[#F6F7F4] px-6 pt-12">
       
       {/* Header */}
-      <Text className="text-2xl font-semibold text-gray-900 mb-2">
-        How are you feeling today?
-      </Text>
-      <Text className="text-gray-600 mb-6">
-        Choose a mood and we’ll suggest something helpful
-      </Text>
+      <View className="flex-row justify-between items-center mb-6">
+        <View>
+          <Text className="text-2xl font-semibold text-gray-900">
+            How are you feeling today?
+          </Text>
+          <Text className="text-gray-600">
+            Choose a mood and begin
+          </Text>
+        </View>
+
+        {/* XP badge */}
+        <View className="bg-primary-soft px-4 py-2 rounded-full">
+          <Text className="text-primary font-semibold">
+            ✨ {xp} XP
+          </Text>
+        </View>
+      </View>
 
       {/* Mood selector */}
       <View className="flex-row flex-wrap justify-between mb-8">
@@ -79,25 +81,40 @@ export default function HomeScreen() {
         })}
       </View>
 
-      {/* Recommended activities */}
+      {/* Activities */}
       <Text className="text-xl font-semibold text-gray-900 mb-4">
         Recommended for you
       </Text>
 
-      {ACTIVITIES[selectedMood].map((activity, index) => (
-        <Pressable
-          key={index}
-          className="bg-white rounded-2xl p-5 mb-4"
-        >
-          <Text className="text-gray-900 font-medium mb-1">
-            {activity}
-          </Text>
-          <Text className="text-gray-500 text-sm">
-            {selectedMood.charAt(0).toUpperCase() + selectedMood.slice(1)} support
-          </Text>
-        </Pressable>
-      ))}
+      {ACTIVITIES[selectedMood].map((activity) => {
+        const isDone = completed.includes(activity);
 
+        return (
+          <View
+            key={activity}
+            className="bg-white rounded-2xl p-5 mb-4"
+          >
+            <Text className="text-gray-900 font-medium">
+              {activity}
+            </Text>
+
+            <Pressable
+              onPress={() => completeActivity(activity)}
+              className={`float-right rounded-full py-2 items-center
+                ${isDone ? "bg-gray-200" : "bg-primary"}
+              `}
+            >
+              <Text
+                className={`font-medium
+                  ${isDone ? "text-gray-500" : "text-gray-900"}
+                `}
+              >
+                {isDone ? "✓" : ` +${XP_PER_ACTIVITY} XP`}
+              </Text>
+            </Pressable>
+          </View>
+        );
+      })}
     </ScrollView>
   );
 }
