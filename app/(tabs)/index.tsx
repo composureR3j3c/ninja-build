@@ -34,7 +34,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-[#F6F7F4] px-6 pt-12">
+    <ScrollView className="flex-1 bg-background px-6 pt-12">
       
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6">
@@ -94,24 +94,24 @@ export default function HomeScreen() {
             key={activity}
             className="bg-white rounded-2xl p-5 mb-4"
           >
-            <Text className="text-gray-900 font-medium">
-              {activity}
-            </Text>
+            <View className="flex-row justify-between items-center">
+              <Text className="text-gray-900 font-medium">
+                {activity}
+              </Text>
 
-            <Pressable
-              onPress={() => completeActivity(activity)}
-              className={`float-right rounded-full py-2 items-center
-                ${isDone ? "bg-gray-200" : "bg-primary"}
-              `}
-            >
-              <Text
-                className={`font-medium
-                  ${isDone ? "text-gray-500" : "text-gray-900"}
+              <Pressable
+                onPress={() => completeActivity(activity)}
+                className={`rounded-full px-4 py-2 items-center justify-center w-28
+                  ${isDone ? "bg-gray-200" : "bg-primary"}
                 `}
               >
-                {isDone ? "✓" : ` +${XP_PER_ACTIVITY} XP`}
-              </Text>
-            </Pressable>
+                <Text
+                  className={`font-medium ${isDone ? "text-gray-500" : "text-white"}`}
+                >
+                  {isDone ? "✓" : `+${XP_PER_ACTIVITY} XP`}
+                </Text>
+              </Pressable>
+            </View>
           </View>
         );
       })}

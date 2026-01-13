@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Pressable } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
+import GoogleIcon from "@/src/components/GoogleIcon";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -22,22 +23,26 @@ export default function LoginScreen() {
         <Text className="text-gray-500 mb-8">
           Sign in to continue
         </Text>
-         {/* Create account button */}
+         {/* Log in button */}
         <Pressable
-          onPress={handleGoogleContinue}
-          className={`rounded-full py-2 my-3 items-center flex-row justify-center
-             justify-content-end
-             border border-[#FFD54F]-700
-  `}
-        >
-          <AntDesign name="google" size={25} color="#FFD54F" style={{ marginRight: 12 }} />
-
-          <Text
-            className={`font-medium text-base`}
-          >
-            Continue with Google
-          </Text>
-        </Pressable>
+                  onPress={handleGoogleContinue}
+                  className={`rounded-full py-2 my-3 items-center flex-row justify-center
+                     justify-content-end
+                     border border-brand-dark
+          `}
+                >
+                  <GoogleIcon size={24}/>
+                  {/* <AntDesign name="google" size={25} color="#E8A926" style={{ marginRight: 12 }} /> */}
+        
+                  <Text
+                    className={`font-medium text-base ml-3
+            `}
+                  >
+                    Continue with Google
+                  </Text>
+                </Pressable>
+        
+        
 
 
         {/* <TextInput

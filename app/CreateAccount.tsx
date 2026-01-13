@@ -1,5 +1,7 @@
-import { View, Text, TextInput, Pressable } from "react-native";
-import { useState } from "react"; import { AntDesign } from "@expo/vector-icons";
+import GoogleIcon from "@/src/components/GoogleIcon";
+import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
 
 
@@ -45,9 +47,11 @@ export default function SignupScreen() {
         >
           <View
             className={`w-5 h-5 rounded-md border mr-3 items-center justify-center
+              ${agreed && "border-black bg-brand"}
             `}
           >
-            {/* {agreed && <View className="w-2.5 h-2.5 bg-gray-900 rounded-sm" />} */}
+            
+            {agreed && <View className="w-2.5 h-2.5 bg-gray-900 rounded-sm" />}
           </View>
 
           <Text className="text-gray-600 flex-1 text-sm">
@@ -67,13 +71,14 @@ export default function SignupScreen() {
           onPress={handleGoogleContinue}
           className={`rounded-full py-2 my-3 items-center flex-row justify-center
              justify-content-end
-             border border-[#FFD54F]-700
+             border border-brand-dark
   `}
         >
-          <AntDesign name="google" size={25} color="#FFD54F" style={{ marginRight: 12 }} />
+          <GoogleIcon size={24}/>
+          {/* <AntDesign name="google" size={25} color="#E8A926" style={{ marginRight: 12 }} /> */}
 
           <Text
-            className={`font-medium text-base
+            className={`font-medium text-base ml-3
       ${agreed ? "text-gray-900" : "text-gray-500"}
     `}
           >
