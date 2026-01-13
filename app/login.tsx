@@ -1,14 +1,28 @@
-import { View, Text, TextInput, Pressable } from "react-native";
+import { View, Text, TextInput, Pressable, Alert } from "react-native";
 import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import GoogleIcon from "@/src/components/GoogleIcon";
+import { Redirect } from "expo-router";
+import { useGlobalContext } from "@/lib/global-provider";
+import { login } from "@/lib/appwrite";
 
 export default function LoginScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  function handleGoogleContinue(): void {
-    throw new Error("Function not implemented.");
-  }
+  const { refetch, loading, isLogged } = useGlobalContext();
+  
+    if (!loading && isLogged) return <Redirect href="/" />;
+  
+  
+    const handleGoogleContinue = async () => {
+      const result = await login();
+          if (result) {
+          // console.log("Login successful");
+          
+              <Redirect href="/" />
+              refetch();
+          } else {
+              Alert.alert("Error", "Failed to login");
+          }
+    };
 
   return (
     <View className="flex-1 bg-[#F6F7F4] justify-center px-6">

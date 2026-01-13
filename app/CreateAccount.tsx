@@ -1,7 +1,10 @@
+import { useGlobalContext } from "@/lib/global-provider";
 import GoogleIcon from "@/src/components/GoogleIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
+import { login } from '@/lib/appwrite';
+import { Redirect } from "expo-router";
 
 
 
@@ -11,19 +14,22 @@ export default function SignupScreen() {
   const [agreed, setAgreed] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const handleCreateAccount = () => {
-    if (!agreed) {
-      setShowError(true);
-      return;
-    }
+  const { refetch, loading, isLogged } = useGlobalContext();
 
-    // proceed with signup
-    console.log("Creating account...");
+  if (!loading && isLogged) return <Redirect href="/" />;
+
+
+  const handleGoogleContinue = async () => {
+    const result = await login();
+        if (result) {
+        // console.log("Login successful");
+            <Redirect href="/" />
+            refetch();
+        } else {
+            Alert.alert("Error", "Failed to login");
+        }
   };
 
-  function handleGoogleContinue(): void {
-    throw new Error("Function not implemented.");
-  }
 
   return (
     <View className="flex-1 bg-[#F6F7F4] justify-center px-6">
