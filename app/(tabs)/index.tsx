@@ -74,7 +74,7 @@ export default function HomeScreen() {
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6">
         <View>
-          <Text className="text-2xl font-semibold text-gray-900">
+          <Text className="text-xl font-semibold text-gray-900">
             How are you feeling today?
           </Text>
           <Text className="text-gray-600">
