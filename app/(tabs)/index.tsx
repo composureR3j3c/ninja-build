@@ -1,9 +1,9 @@
 import { View, Text, Pressable, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
-import { useGlobalContext } from "@/lib/global-provider";
+// import { useGlobalContext } from "@/lib/global-provider";
 import { useLocalSearchParams } from "expo-router"
-import { useAppwrite } from "@/lib/useAppwrite";
-import { getLatestProperties, getProperties } from "@/lib/appwrite";
+// import { useAppwrite } from "@/lib/useAppwrite";
+// import { getLatestProperties, getProperties } from "@/lib/appwrite";
 
 type Mood = "calm" | "stressed" | "tired" | "sad" | "focused";
 
@@ -30,36 +30,36 @@ export default function HomeScreen() {
   const [xp, setXp] = useState(0);
   const [completed, setCompleted] = useState<string[]>([]);
 
-  const { user } = useGlobalContext();
+  // const { user } = useGlobalContext();
 
-  const params = useLocalSearchParams<{ query?: string; filter?: string }>();
+  // const params = useLocalSearchParams<{ query?: string; filter?: string }>();
 
-  const { data: latestProperties, loading: latestPropertiesLoading } =
-    useAppwrite({
-      fn: getLatestProperties,
-    });
+  // const { data: latestProperties, loading: latestPropertiesLoading } =
+  //   useAppwrite({
+  //     fn: getLatestProperties,
+  //   });
 
-  const {
-    data: properties,
-    refetch,
-    loading,
-  } = useAppwrite({
-    fn: getProperties,
-    params: {
-      filter: params.filter!,
-      query: params.query!,
-      limit: 6,
-    },
-    skip: true,
-  });
+  // const {
+  //   data: properties,
+  //   refetch,
+  //   loading,
+  // } = useAppwrite({
+  //   fn: getProperties,
+  //   params: {
+  //     filter: params.filter!,
+  //     query: params.query!,
+  //     limit: 6,
+  //   },
+  //   skip: true,
+  // });
 
-  useEffect(() => {
-    refetch({
-      filter: params.filter!,
-      query: params.query!,
-      limit: 6,
-    });
-  }, [params.filter, params.query]);
+  // useEffect(() => {
+  //   refetch({
+  //     filter: params.filter!,
+  //     query: params.query!,
+  //     limit: 6,
+  //   });
+  // }, [params.filter, params.query]);
 
   const completeActivity = (activity: string) => {
     if (completed.includes(activity)) return;
