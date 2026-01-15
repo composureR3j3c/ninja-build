@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 import "../global.css"
 import { DarkTheme, DefaultTheme,ThemeProvider } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
+import GlobalProvider from '@/lib/global-provider';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -31,9 +32,11 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    // <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <GlobalProvider>
       <Stack screenOptions={{ headerShown: false }}>
       </Stack>
-    </ThemeProvider>
+    </GlobalProvider>
+    // </ThemeProvider>
   );
 }
