@@ -8,14 +8,20 @@ import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
 
-type Mood = "calm" | "stressed" | "tired" | "sad" | "focused";
-
+type Mood = "calm" | "stressed" | "tired" | "sad" | "focused" | "anxious" | "unmotivated" | "overwhelmed" | "energetic" | "lonely" | "happy" | "creative";
 const MOODS: { key: Mood; label: string; emoji: string }[] = [
-  { key: "calm", label: "Calm", emoji: "😌" },
-  { key: "stressed", label: "Stressed", emoji: "😣" },
-  { key: "tired", label: "Tired", emoji: "😴" },
-  { key: "sad", label: "Sad", emoji: "😔" },
-  { key: "focused", label: "Focused", emoji: "🎯" },
+  { key: "calm", label: "Calm", emoji: "😌", },
+  { key: "stressed", label: "Stressed", emoji: "😣", },
+  { key: "tired", label: "Tired", emoji: "😴",},
+  { key: "sad", label: "Sad", emoji: "😔"},
+  { key: "focused", label: "Focused", emoji: "🎯"},
+  { key: "anxious", label: "Anxious", emoji: "😰", },
+  { key: "unmotivated", label: "Unmotivated", emoji: "😕", },
+  { key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫", },
+  { key: "energetic", label: "Energetic", emoji: "⚡", },
+  { key: "lonely", label: "Lonely", emoji: "🫂", },
+  { key: "happy", label: "Happy", emoji: "😊", },
+  { key: "creative", label: "Creative", emoji: "🎨", },
 ];
 
 const ACTIVITIES: Record<Mood, string[]> = {
@@ -24,6 +30,14 @@ const ACTIVITIES: Record<Mood, string[]> = {
   tired: ["Wake-up breathing", "Mindful stretch", "Energy reset"],
   sad: ["Self-compassion", "Emotional check-in", "Kind thoughts"],
   focused: ["Focus timer", "Clarity breathing", "Goal setting"],
+anxious:[ "4-7-8 breathing", "Grounding exercise (5-4-3-2-1)", "Reassurance notes"],
+unmotivated:["2-minute rule", "Tiny task list", "Motivation boost audio"],
+overwhelmed:["Task dump", "Priority sorting", "Guided calm-down"],
+energetic:["Quick workout", "Creative brainstorm", "Fast-paced focus sprint"],
+lonely:["Reach-out reminder", "Connection reflection", "Guided reassurance"],
+happy:["Positive journaling", "Share gratitude", "Celebrate wins"],
+creative:["Free writing", "Idea sketching", "Music-inspired creation"],
+  
 };
 
 const XP_PER_ACTIVITY = 10;
@@ -72,12 +86,12 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView className="flex-1 bg-background px-6 pt-12">
+    <ScrollView className="flex-1 bg-background px-4 pt-12">
       
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6">
         <View>
-          <Text className="text-xl font-semibold text-gray-900">
+          <Text className="text-lg font-semibold text-gray-900">
             How are you feeling today?
           </Text>
           <Text className="text-gray-600">
@@ -94,13 +108,13 @@ export default function HomeScreen() {
       </View>
 
       {/* Mood selector */}
-      <View className="flex-row flex-wrap justify-between mb-8">
+      <View className="flex-row flex-wrap justify-evenly mb-8">
         {MOODS.map((mood) => {
           const active = selectedMood === mood.key;
 
           return (
           
-            <ScaleWrapper active={active}>
+            <ScaleWrapper active={active}key={mood.key}>
             <Pressable
               key={mood.key}
               onPress={() => setSelectedMood(mood.key)}

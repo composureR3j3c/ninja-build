@@ -21,6 +21,7 @@ export function ScaleWrapper({ active, children }: ScaleWrapperProps) {
     <Animated.View
       style={{
         transform: [{ scale }],
+        width: "40%",
       }}
     >
       {children}
