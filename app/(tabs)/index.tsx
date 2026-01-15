@@ -2,6 +2,9 @@ import { View, Text, Pressable, ScrollView } from "react-native";
 import { useEffect, useState } from "react";
 // import { useGlobalContext } from "@/lib/global-provider";
 import { useLocalSearchParams } from "expo-router"
+import { ScaleIn } from "@/components/animated/ScaleIn";
+import { AnimatedPressable } from "@/components/animated/AnimatedPressable";
+import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
 
@@ -96,11 +99,13 @@ export default function HomeScreen() {
           const active = selectedMood === mood.key;
 
           return (
+          
+            <ScaleWrapper active={active}>
             <Pressable
               key={mood.key}
               onPress={() => setSelectedMood(mood.key)}
-              className={`w-[48%] mb-4 rounded-2xl p-4 items-center
-                ${active ? "bg-primary-soft" : "bg-white"}
+              className={`mb-4 rounded-2xl p-4 items-center
+                ${active ? "bg-primary-soft" : "bg-gray-100"}
               `}
             >
               <Text className="text-3xl mb-2">{mood.emoji}</Text>
@@ -112,6 +117,7 @@ export default function HomeScreen() {
                 {mood.label}
               </Text>
             </Pressable>
+            </ScaleWrapper>
           );
         })}
       </View>

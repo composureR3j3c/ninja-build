@@ -1,10 +1,9 @@
+import GoogleIcon from "@/components/GoogleIcon";
+import { login } from '@/lib/appwrite';
 import { useGlobalContext } from "@/lib/global-provider";
-import GoogleIcon from "@/src/components/GoogleIcon";
-import { AntDesign } from "@expo/vector-icons";
+import { Redirect } from "expo-router";
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
-import { login } from '@/lib/appwrite';
-import { Redirect } from "expo-router";
 
 
 
