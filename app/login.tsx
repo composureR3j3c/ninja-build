@@ -3,25 +3,25 @@ import { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import GoogleIcon from "@/src/components/GoogleIcon";
 import { Redirect } from "expo-router";
-import { useGlobalContext } from "@/lib/global-provider";
-import { login } from "@/lib/appwrite";
+// import { useGlobalContext } from "@/lib/global-provider";
+// import { login } from "@/lib/appwrite";
 
 export default function LoginScreen() {
-  const { refetch, loading, isLogged } = useGlobalContext();
+  // const { refetch, loading, isLogged } = useGlobalContext();
   
-    if (!loading && isLogged) return <Redirect href="/" />;
+    // if (!loading && isLogged) return <Redirect href="/" />;
   
   
     const handleGoogleContinue = async () => {
-      const result = await login();
-          if (result) {
+      // const result = await login();
+          // if (result) {
           // console.log("Login successful");
           
-              <Redirect href="/" />
-              refetch();
-          } else {
-              Alert.alert("Error", "Failed to login");
-          }
+          //     <Redirect href="/" />
+          //     refetch();
+          // } else {
+          //     Alert.alert("Error", "Failed to login");
+          // }
     };
 
   return (

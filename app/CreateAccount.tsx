@@ -1,9 +1,9 @@
-import { useGlobalContext } from "@/lib/global-provider";
+// import { useGlobalContext } from "@/lib/global-provider";
 import GoogleIcon from "@/src/components/GoogleIcon";
 import { AntDesign } from "@expo/vector-icons";
 import { useState } from "react";
 import { Alert, Pressable, Text, View } from "react-native";
-import { login } from '@/lib/appwrite';
+// import { login } from '@/lib/appwrite';
 import { Redirect } from "expo-router";
 
 
@@ -14,20 +14,20 @@ export default function SignupScreen() {
   const [agreed, setAgreed] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const { refetch, loading, isLogged } = useGlobalContext();
+  // const { refetch, loading, isLogged } = useGlobalContext();
 
-  if (!loading && isLogged) return <Redirect href="/" />;
+  // if (!loading && isLogged) return <Redirect href="/" />;
 
 
   const handleGoogleContinue = async () => {
-    const result = await login();
-        if (result) {
-        // console.log("Login successful");
-            <Redirect href="/" />
-            refetch();
-        } else {
-            Alert.alert("Error", "Failed to login");
-        }
+    // const result = await login();
+    //     if (result) {
+    //     // console.log("Login successful");
+    //         <Redirect href="/" />
+    //         refetch();
+    //     } else {
+    //         Alert.alert("Error", "Failed to login");
+    //     }
   };
 
 

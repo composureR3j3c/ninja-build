@@ -1,9 +1,10 @@
 import 'react-native-reanimated';
 import { SplashScreen, Stack } from 'expo-router';
-import { GlobalProvider } from '@/lib/global-provider';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import "../global.css"
+import { DarkTheme, DefaultTheme,ThemeProvider } from '@react-navigation/native';
+import { useColorScheme } from 'react-native';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -18,6 +19,7 @@ export default function RootLayout() {
     "Rubik-Regular": require("../assets/fonts/Rubik-Regular.ttf"),
     "Rubik-SemiBold": require("../assets/fonts/Rubik-SemiBold.ttf"),
   });
+  const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (fontsLoaded) {
@@ -29,9 +31,9 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <GlobalProvider>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
       <Stack screenOptions={{ headerShown: false }}>
       </Stack>
-    </GlobalProvider>
+    </ThemeProvider>
   );
 }
