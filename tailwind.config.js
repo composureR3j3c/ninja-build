@@ -16,24 +16,29 @@ module.exports = {
         "rubik-semibold": ["Rubik-SemiBold", "sans-serif"],
         "rubik-light": ["Rubik-Light", "sans-serif"],
       },
-    colors: {
-      brand: {
-        DEFAULT: "#E8A926",
-        dark: "#C27803",
-        soft: "#FFF4D1",
+      colors: {
+        brand: {
+          DEFAULT: "#FFD97D",      // Soft golden
+          dark: "#F4B841",         // Slightly deeper gold
+          soft: "#FFF4E1",         // Gentle background highlight
+        },
+        primary: {
+          DEFAULT: "#6C63FF",      // Calm purple
+          dark: "#524CCC",         // Darker for contrast
+          soft: "#EDE9FF",         // Very light purple for cards/backgrounds
+        },
+        accent: "#4ADE80",         // Soft green for positive actions
+        warning: "#F87171",        // Gentle red for errors/alerts
+        info: "#60A5FA",           // Calm blue for info hints
+        text: {
+          primary: "#1F2937",      // Dark gray, easier on eyes
+          secondary: "#4B5563",    // Medium gray
+        },
+        background: "#F9FAFB",     // Soft neutral background
+        surface: "#FFFFFF",        // Card or surface background
+        tint: "#F3F4F6",           // Extra soft gray for subtle borders
       },
-      primary: {
-        DEFAULT: "#4F46E5",
-        dark: "#3730A3",
-        soft: "#C7D2FE",
-      },
-      accent: "#10B981",
-      text: {
-        primary: "#111827",
-        secondary: "#6B7280",
-      },
-      background: "#F9FAFB",
-    },
+      
   },
 },
 

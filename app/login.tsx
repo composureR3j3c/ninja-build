@@ -1,10 +1,8 @@
-import { View, Text, TextInput, Pressable, Alert } from "react-native";
-import { useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import GoogleIcon from "@/src/components/GoogleIcon";
-import { Redirect } from "expo-router";
-import { useGlobalContext } from "@/lib/global-provider";
+import GoogleIcon from "@/components/GoogleIcon";
 import { login } from "@/lib/appwrite";
+import { useGlobalContext } from "@/lib/global-provider";
+import { Redirect } from "expo-router";
+import { Alert, Pressable, Text, View } from "react-native";
 
 export default function LoginScreen() {
   const { refetch, loading, isLogged } = useGlobalContext();
