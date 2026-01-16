@@ -31,21 +31,28 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={20} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ color }) => <Ionicons name="person" size={28} color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons name="person" size={20} color={color} />,
+        }}
+      />
+        <Tabs.Screen
+        name="record"
+        options={{
+          title: 'Record',
+          tabBarIcon: ({ color }) => <Ionicons name="mic" size={20} color={color} />,
         }}
       />
        <Tabs.Screen
         name="welcomeScreen"
         options={{
           title: 'Welcome',
-          tabBarIcon: ({ color }) => <Ionicons size={28} name="game-controller" color={color} />,
+          tabBarIcon: ({ color }) => <Ionicons size={20} name="game-controller" color={color} />,
         }}
       />
       
