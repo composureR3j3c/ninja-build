@@ -119,7 +119,7 @@ export default function HomeScreen() {
               key={mood.key}
               onPress={() => setSelectedMood(mood.key)}
               className={`mb-4 rounded-2xl p-4 items-center
-                ${active ? "bg-primary-soft" : "bg-gray-100"}
+                ${active ? "bg-primary-soft" : "bg-white"}
               `}
             >
               <Text className="text-3xl mb-2">{mood.emoji}</Text>

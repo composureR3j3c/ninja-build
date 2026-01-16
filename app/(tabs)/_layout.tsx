@@ -14,11 +14,14 @@ export default function TabLayout() {
     
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
+        tabBarActiveBackgroundColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarInactiveBackgroundColor: Colors[colorScheme ?? 'light'].tint,
+        // tabBarInactiveTintColor: Colors[colorScheme ?? 'light'].tabIconDefault,
         headerShown: false,
-        tabBarButton: HapticTab,
+        tabBarButton: (props) => <HapticTab {...props} />,
         tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'dark'].background,
+          backgroundColor: "#DEDAD3",
           borderTopWidth: 0,
         },
       }}
