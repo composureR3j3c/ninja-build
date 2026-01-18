@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { View, Text, Pressable, Platform } from "react-native";
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
+import { useEffect, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
 export default function RecordScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -91,13 +91,34 @@ export default function RecordScreen() {
       </Text>
 
       <Pressable
-        onPress={recording ? stopRecording : startRecording}
-        className="px-6 py-4 rounded-xl bg-black"
-      >
-        <Text className="text-white text-base">
-          {recording ? "Stop Recording" : "Start Recording"}
-        </Text>
-      </Pressable>
+  onPress={recording ? stopRecording : startRecording}
+  className="items-center justify-center"
+>
+  {/* Outer soft ring */}
+  <View
+    className={`
+      w-32 h-32 rounded-full items-center justify-center
+      ${recording ? "bg-neutral-800" : "bg-neutral-200"}
+    `}
+  >
+    {/* Inner mic button */}
+    <View
+      className={`
+        w-20 h-20 rounded-full items-center justify-center
+        ${recording ? "bg-red-600" : "bg-neutral-900"}
+      `}
+    >
+      <Text className="text-white text-2xl">
+        {recording ? "■" : "🎙️"}
+      </Text>
+    </View>
+  </View>
+
+  {/* Label */}
+  <Text className="mt-6 text-sm text-neutral-500">
+    {recording ? "Tap to stop recording" : "Tap to start recording"}
+  </Text>
+</Pressable>
 
       {audioUri && (
         <Text className="text-xs mt-6 text-gray-500 text-center">
