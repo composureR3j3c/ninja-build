@@ -2,6 +2,7 @@ import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useState } from "react";
 import { Pressable, Text, View } from "react-native";
+import STT from "@/components/STT";
 
 export default function RecordScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -76,6 +77,7 @@ export default function RecordScreen() {
 
       const savedUri = await saveRecordingFile(tempUri);
       setAudioUri(savedUri);
+      await STT(savedUri);
     } catch (err) {
       console.error("Failed to stop recording", err);
     }

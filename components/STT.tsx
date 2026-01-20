@@ -1,47 +1,45 @@
- // Install the axios and fs-extra package by executing the command "npm install axios fs-extra"
-
 import axios from "axios";
-// import fs from "fs-extra";
 
-const baseUrl = "https://api.assemblyai.com";
+export default async function STT(audioData: any) {
 
-const headers = {
-  authorization: "token_goes_here",
-};
+    const baseUrl = "https://api.assemblyai.com";
 
-// You can upload a local file using the following code
-// const path = "./my-audio.mp3";
-// const audioData = await fs.readFile(path);
-// const uploadResponse = await axios.post(`${baseUrl}/v2/upload`, audioData, {
-//   headers,
-// });
-// const audioUrl = uploadResponse.data.upload_url;
+    const headers = {
+        authorization: "token_goes_here",
+    };
 
-const audioUrl = "https://assembly.ai/wildfires.mp3";
+    const uploadResponse = await axios.post(`${baseUrl}/v2/upload`, audioData, {
+        headers,
+    });
+    // const audioUrl = uploadResponse.data.upload_url;
 
-const data = {
-  audio_url: audioUrl,
-  speech_models: ["universal"],
-};
+    const audioUrl = "https://assembly.ai/wildfires.mp3";
 
-const url = `${baseUrl}/v2/transcript`;
-const response = await axios.post(url, data, { headers: headers });
+    const data = {
+        audio_url: audioUrl,
+        speech_models: ["universal"],
+    };
 
-const transcriptId = response.data.id;
-const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
+    const url = `${baseUrl}/v2/transcript`;
+    const response = await axios.post(url, data, { headers: headers });
 
-while (true) {
-  const pollingResponse = await axios.get(pollingEndpoint, {
-    headers: headers,
-  });
-  const transcriptionResult = pollingResponse.data;
+    const transcriptId = response.data.id;
+    const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
 
-  if (transcriptionResult.status === "completed") {
-    console.log(transcriptionResult.text);
-    break;
-  } else if (transcriptionResult.status === "error") {
-    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
+    while (true) {
+        const pollingResponse = await axios.get(pollingEndpoint, {
+            headers: headers,
+        });
+        const transcriptionResult = pollingResponse.data;
+
+        if (transcriptionResult.status === "completed") {
+            console.log(transcriptionResult.text);
+            break;
+        } else if (transcriptionResult.status === "error") {
+            throw new Error(`Transcription failed: ${transcriptionResult.error}`);
+        } else {
+            await new Promise((resolve) => setTimeout(resolve, 3000));
+        }
+    }
+
 }
