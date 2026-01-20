@@ -6,7 +6,7 @@ import axios from "axios";
 const baseUrl = "https://api.assemblyai.com";
 
 const headers = {
-  authorization: "fd02e212a99140b69cfb4e678768f603",
+  authorization: "token_goes_here",
 };
 
 // You can upload a local file using the following code
