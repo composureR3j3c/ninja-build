@@ -1,27 +1,38 @@
-import { View, Text, Pressable, ScrollView } from "react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 // import { useGlobalContext } from "@/lib/global-provider";
-import { useLocalSearchParams } from "expo-router"
-import { ScaleIn } from "@/components/animated/ScaleIn";
-import { AnimatedPressable } from "@/components/animated/AnimatedPressable";
 import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
+import { router } from "expo-router";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
 
-type Mood = "calm" | "stressed" | "tired" | "sad" | "focused" | "anxious" | "unmotivated" | "overwhelmed" | "energetic" | "lonely" | "happy" | "creative";
+type Mood =
+  | "calm"
+  | "stressed"
+  | "tired"
+  | "sad"
+  | "focused"
+  | "anxious"
+  | "unmotivated"
+  | "overwhelmed"
+  | "energetic"
+  | "lonely"
+  | "happy"
+  | "creative";
 const MOODS: { key: Mood; label: string; emoji: string }[] = [
-  { key: "calm", label: "Calm", emoji: "😌", },
-  { key: "stressed", label: "Stressed", emoji: "😣", },
-  { key: "tired", label: "Tired", emoji: "😴",},
-  { key: "sad", label: "Sad", emoji: "😔"},
-  { key: "focused", label: "Focused", emoji: "🎯"},
-  { key: "anxious", label: "Anxious", emoji: "😰", },
-  { key: "unmotivated", label: "Unmotivated", emoji: "😕", },
-  { key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫", },
-  { key: "energetic", label: "Energetic", emoji: "⚡", },
-  { key: "lonely", label: "Lonely", emoji: "🫂", },
-  { key: "happy", label: "Happy", emoji: "😊", },
-  { key: "creative", label: "Creative", emoji: "🎨", },
+  { key: "calm", label: "Calm", emoji: "😌" },
+  { key: "stressed", label: "Stressed", emoji: "😣" },
+  { key: "tired", label: "Tired", emoji: "😴" },
+  { key: "sad", label: "Sad", emoji: "😔" },
+  { key: "focused", label: "Focused", emoji: "🎯" },
+  { key: "anxious", label: "Anxious", emoji: "😰" },
+  { key: "unmotivated", label: "Unmotivated", emoji: "😕" },
+  { key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫" },
+  { key: "energetic", label: "Energetic", emoji: "⚡" },
+  { key: "lonely", label: "Lonely", emoji: "🫂" },
+  { key: "happy", label: "Happy", emoji: "😊" },
+  { key: "creative", label: "Creative", emoji: "🎨" },
 ];
 
 const ACTIVITIES: Record<Mood, string[]> = {
@@ -30,14 +41,21 @@ const ACTIVITIES: Record<Mood, string[]> = {
   tired: ["Wake-up breathing", "Mindful stretch", "Energy reset"],
   sad: ["Self-compassion", "Emotional check-in", "Kind thoughts"],
   focused: ["Focus timer", "Clarity breathing", "Goal setting"],
-anxious:[ "4-7-8 breathing", "Grounding exercise (5-4-3-2-1)", "Reassurance notes"],
-unmotivated:["2-minute rule", "Tiny task list", "Motivation boost audio"],
-overwhelmed:["Task dump", "Priority sorting", "Guided calm-down"],
-energetic:["Quick workout", "Creative brainstorm", "Fast-paced focus sprint"],
-lonely:["Reach-out reminder", "Connection reflection", "Guided reassurance"],
-happy:["Positive journaling", "Share gratitude", "Celebrate wins"],
-creative:["Free writing", "Idea sketching", "Music-inspired creation"],
-  
+  anxious: [
+    "4-7-8 breathing",
+    "Grounding exercise (5-4-3-2-1)",
+    "Reassurance notes",
+  ],
+  unmotivated: ["2-minute rule", "Tiny task list", "Motivation boost audio"],
+  overwhelmed: ["Task dump", "Priority sorting", "Guided calm-down"],
+  energetic: [
+    "Quick workout",
+    "Creative brainstorm",
+    "Fast-paced focus sprint",
+  ],
+  lonely: ["Reach-out reminder", "Connection reflection", "Guided reassurance"],
+  happy: ["Positive journaling", "Share gratitude", "Celebrate wins"],
+  creative: ["Free writing", "Idea sketching", "Music-inspired creation"],
 };
 
 const XP_PER_ACTIVITY = 10;
@@ -78,32 +96,37 @@ export default function HomeScreen() {
   //   });
   // }, [params.filter, params.query]);
 
-  const completeActivity = (activity: string) => {
-    if (completed.includes(activity)) return;
+  const completeActivity = async (activity: string) => {
 
-    setCompleted([...completed, activity]);
-    setXp((prev) => prev + XP_PER_ACTIVITY);
+    if (completed.includes(activity)) return;
+    try {
+      const stored = await AsyncStorage.getItem("completedActivities");
+      const parsed: string[] = stored ? JSON.parse(stored) : [];
+      const newCompleted = parsed.includes(activity) ? parsed : [...parsed, activity];
+      setCompleted(newCompleted);
+      setXp((prev) => prev + XP_PER_ACTIVITY);
+    } catch (e) {
+      // fallback to in-memory update if storage fails
+      const newCompleted = completed.includes(activity) ? completed : [...completed, activity];
+      setCompleted(newCompleted);
+      setXp((prev) => prev + XP_PER_ACTIVITY);
+    }
   };
 
   return (
     <ScrollView className="flex-1 bg-background px-4 pt-12">
-      
       {/* Header */}
       <View className="flex-row justify-between items-center mb-6">
         <View>
           <Text className="text-lg font-semibold text-gray-900">
             How are you feeling today?
           </Text>
-          <Text className="text-gray-600">
-            Choose a mood and begin
-          </Text>
+          <Text className="text-gray-600">Choose a mood and begin</Text>
         </View>
 
         {/* XP badge */}
         <View className="bg-primary-soft px-4 py-2 rounded-full">
-          <Text className="text-primary font-semibold">
-            ✨ {xp} XP
-          </Text>
+          <Text className="text-primary font-semibold">✨ {xp} XP</Text>
         </View>
       </View>
 
@@ -113,24 +136,23 @@ export default function HomeScreen() {
           const active = selectedMood === mood.key;
 
           return (
-          
-            <ScaleWrapper active={active}key={mood.key}>
-            <Pressable
-              key={mood.key}
-              onPress={() => setSelectedMood(mood.key)}
-              className={`mb-4 rounded-2xl p-4 items-center
+            <ScaleWrapper active={active} key={mood.key}>
+              <Pressable
+                key={mood.key}
+                onPress={() => setSelectedMood(mood.key)}
+                className={`mb-4 rounded-2xl p-4 items-center
                 ${active ? "bg-primary-soft" : "bg-white"}
               `}
-            >
-              <Text className="text-3xl mb-2">{mood.emoji}</Text>
-              <Text
-                className={`font-medium
+              >
+                <Text className="text-3xl mb-2">{mood.emoji}</Text>
+                <Text
+                  className={`font-medium
                   ${active ? "text-primary" : "text-gray-700"}
                 `}
-              >
-                {mood.label}
-              </Text>
-            </Pressable>
+                >
+                  {mood.label}
+                </Text>
+              </Pressable>
             </ScaleWrapper>
           );
         })}
@@ -145,17 +167,37 @@ export default function HomeScreen() {
         const isDone = completed.includes(activity);
 
         return (
-          <View
+          <Pressable
             key={activity}
+            onPress={() => {
+              // mark activity complete, persist then navigate so status is retained when coming back
+              const newCompleted = completed.includes(activity)
+                ? completed
+                : [...completed, activity];
+              const newXp = completed.includes(activity)
+                ? xp
+                : xp + XP_PER_ACTIVITY;
+              completeActivity(activity);
+              (async () => {
+                try {
+                  await AsyncStorage.setItem(
+                    "completedActivities",
+                    JSON.stringify(newCompleted),
+                  );
+                  await AsyncStorage.setItem("xp", String(newXp));
+                } catch (e) {
+                  // ignore
+                }
+                router.push("/welcomeScreen");
+              })();
+            }}
             className="bg-white rounded-2xl p-5 mb-4"
           >
             <View className="flex-row justify-between items-center">
-              <Text className="text-gray-900 font-medium">
-                {activity}
-              </Text>
+              <Text className="text-gray-900 font-medium">{activity}</Text>
 
               <Pressable
-                onPress={() => completeActivity(activity)}
+                // onPress={() => completeActivity(activity)}
                 className={`rounded-full px-4 py-2 items-center justify-center w-28
                   ${isDone ? "bg-gray-200" : "bg-primary"}
                 `}
@@ -167,7 +209,7 @@ export default function HomeScreen() {
                 </Text>
               </Pressable>
             </View>
-          </View>
+          </Pressable>
         );
       })}
     </ScrollView>

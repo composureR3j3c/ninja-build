@@ -24,7 +24,7 @@ export default function WelcomeScreen() {
       <View className="space-y-4">
         <Pressable
           onPress={() => router.push("/CreateAccount")}
-          className="bg-brand rounded-full py-4 items-center mb-2"
+          className="bg-primary-soft rounded-full py-4 items-center mb-2"
         >
           <Text className="text-gray-900 font-semibold text-base">
             Get started
