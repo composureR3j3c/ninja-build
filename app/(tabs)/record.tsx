@@ -1,8 +1,7 @@
 import { Audio } from "expo-av";
 import * as FileSystem from "expo-file-system";
 import { useEffect, useState } from "react";
-import { Pressable, Text, View } from "react-native";
-import STT from "@/components/STT";
+import { Platform, Pressable, Text, View } from "react-native";
 
 export default function RecordScreen() {
   const [recording, setRecording] = useState<Audio.Recording | null>(null);
@@ -27,20 +26,38 @@ export default function RecordScreen() {
   /* -------------------------------------------------- */
   /* Save file using modern FileSystem API              */
   /* -------------------------------------------------- */
-  const saveRecordingFile = async (tempUri: string) => {
-    const basePath = FileSystem.Paths.document.uri;
-    const fileName = `audio-${Date.now()}.m4a`;
-    const finalUri = `${basePath}${fileName}`;
+const saveRecordingFile = async (tempUri: string) => {
+  // 🌐 WEB: do nothing — browser handles blob URLs
+  if (Platform.OS === "web") {
+    return tempUri;
+  }
 
-    await FileSystem.copyAsync({
-      from: tempUri,
-      to: finalUri,
-    });
+  // 📱 NATIVE (iOS / Android)
+  const baseDir = FileSystem.cacheDirectory || FileSystem.documentDirectory;
 
-    await FileSystem.deleteAsync(tempUri);
+  if (!baseDir) {
+    // Extremely rare, but keeps TS + runtime safe
+    return tempUri;
+  }
 
-    return finalUri;
-  };
+  const audioDir = `${baseDir}audio/`;
+  const fileName = `audio-${Date.now()}.m4a`;
+  const finalUri = `${audioDir}${fileName}`;
+
+  try {
+    await FileSystem.makeDirectoryAsync(audioDir, { intermediates: true });
+  } catch {
+    // Directory may already exist — safe to ignore
+  }
+
+  // ✅ copyAsync is NOT deprecated (only moveAsync is)
+  await FileSystem.copyAsync({
+    from: tempUri,
+    to: finalUri,
+  });
+
+  return finalUri;
+};
 
   /* -------------------------------------------------- */
   /* Start recording                                   */
@@ -52,7 +69,7 @@ export default function RecordScreen() {
       const rec = new Audio.Recording();
 
       await rec.prepareToRecordAsync(
-        Audio.RecordingOptionsPresets.HIGH_QUALITY
+        Audio.RecordingOptionsPresets.HIGH_QUALITY,
       );
 
       await rec.startAsync();
@@ -72,12 +89,14 @@ export default function RecordScreen() {
       await recording.stopAndUnloadAsync();
       const tempUri = recording.getURI();
       setRecording(null);
-
+      console.log("Recording stopped and stored at", tempUri);
       if (!tempUri) return;
 
       const savedUri = await saveRecordingFile(tempUri);
       setAudioUri(savedUri);
-      await STT(savedUri);
+      console.log("Recording saved at", savedUri);
+
+      // await STT(savedUri);
     } catch (err) {
       console.error("Failed to stop recording", err);
     }
@@ -88,47 +107,45 @@ export default function RecordScreen() {
   /* -------------------------------------------------- */
   return (
     <View className="flex-1 items-center justify-center p-6 bg-background">
-      <Text className="text-xl font-semibold mb-6">
-        Audio Recorder
-      </Text>
+      <Text className="text-xl font-semibold mb-6">Audio Recorder</Text>
 
       <Pressable
-  onPress={recording ? stopRecording : startRecording}
-  className="items-center justify-center"
->
-  {/* Outer soft ring */}
-  <View
-    className={`
+        onPress={recording ? stopRecording : startRecording}
+        className="items-center justify-center"
+      >
+        {/* Outer soft ring */}
+        <View
+          className={`
       w-32 h-32 rounded-full items-center justify-center
       ${recording ? "bg-neutral-800" : "bg-neutral-200"}
     `}
-  >
-    {/* Inner mic button */}
-    <View
-      className={`
+        >
+          {/* Inner mic button */}
+          <View
+            className={`
         w-20 h-20 rounded-full items-center justify-center
         ${recording ? "bg-red-600" : "bg-neutral-900"}
       `}
-    >
-      <Text className="text-white text-2xl">
-        {recording ? "■" : "🎙️"}
-      </Text>
-    </View>
-  </View>
+          >
+            <Text className="text-white text-2xl">
+              {recording ? "■" : "🎙️"}
+            </Text>
+          </View>
+        </View>
 
-  {/* Label */}
-  <Text className="mt-6 text-sm text-neutral-500">
-    {recording ? "Tap to stop recording" : "Tap to start recording"}
-  </Text>
-</Pressable>
+        {/* Label */}
+        <Text className="mt-6 text-sm text-neutral-500">
+          {recording ? "Tap to stop recording" : "Tap to start recording"}
+        </Text>
+      </Pressable>
 
-      {audioUri && (
+      {/* {audioUri && (
         <Text className="text-xs mt-6 text-gray-500 text-center">
           Saved at:
           {"\n"}
           {audioUri}
         </Text>
-      )}
+      )} */}
     </View>
   );
 }
