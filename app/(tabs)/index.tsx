@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 // import { useGlobalContext } from "@/lib/global-provider";
 import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
 import { router } from "expo-router";
+import { MediationListItem } from "@/components/MeditationListItem";
+import { meditations } from "@/data";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
 
@@ -20,19 +22,19 @@ type Mood =
   | "lonely"
   | "happy"
   | "creative";
-const MOODS: { key: Mood; label: string; emoji: string }[] = [
-  { key: "calm", label: "Calm", emoji: "😌" },
-  { key: "stressed", label: "Stressed", emoji: "😣" },
-  { key: "tired", label: "Tired", emoji: "😴" },
-  { key: "sad", label: "Sad", emoji: "😔" },
-  { key: "focused", label: "Focused", emoji: "🎯" },
-  { key: "anxious", label: "Anxious", emoji: "😰" },
-  { key: "unmotivated", label: "Unmotivated", emoji: "😕" },
-  { key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫" },
-  { key: "energetic", label: "Energetic", emoji: "⚡" },
-  { key: "lonely", label: "Lonely", emoji: "🫂" },
-  { key: "happy", label: "Happy", emoji: "😊" },
-  { key: "creative", label: "Creative", emoji: "🎨" },
+const MOODS: { id: string; key: Mood; label: string; emoji: string }[] = [
+  { id: "1", key: "calm", label: "Calm", emoji: "😌" },
+  { id: "2", key: "stressed", label: "Stressed", emoji: "😣" },
+  { id: "3", key: "tired", label: "Tired", emoji: "😴" },
+  { id: "4", key: "sad", label: "Sad", emoji: "😔" },
+  { id: "5", key: "focused", label: "Focused", emoji: "🎯" },
+  { id: "6", key: "anxious", label: "Anxious", emoji: "😰" },
+  { id: "7", key: "unmotivated", label: "Unmotivated", emoji: "😕" },
+  { id: "8", key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫" },
+  { id: "9", key: "energetic", label: "Energetic", emoji: "⚡" },
+  { id: "10", key: "lonely", label: "Lonely", emoji: "🫂" },
+  { id: "11", key: "happy", label: "Happy", emoji: "😊" },
+  { id: "12", key: "creative", label: "Creative", emoji: "🎨" },
 ];
 
 const ACTIVITIES: Record<Mood, string[]> = {
@@ -188,7 +190,9 @@ export default function HomeScreen() {
                 } catch (e) {
                   // ignore
                 }
-                router.push("/welcomeScreen");
+                // router.push("/ActivityScreen/" + activity.replace(/ /g, '-').toLowerCase());
+                router.push(`/meditation/${MOODS.find(m => m.key === selectedMood)?.id}/`);
+
               })();
             }}
             className="bg-white rounded-2xl p-5 mb-4"
@@ -210,8 +214,17 @@ export default function HomeScreen() {
               </Pressable>
             </View>
           </Pressable>
+          
+    
         );
       })}
+      {/* <FlatList
+      data={meditations}
+      className="bg-white"
+      contentContainerClassName="gap-8 p-3"
+      renderItem={({ item }) => <MediationListItem meditation={item} />}
+      keyExtractor={(item) => item.id.toString()}
+    /> */}
     </ScrollView>
   );
 }
