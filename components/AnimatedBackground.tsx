@@ -61,8 +61,8 @@ const style3 = useAnimatedStyle(() => ({
   return (
     <View className="absolute top-0 bottom-0 left-0 right-0 items-center">
       {/* circles */}
-      <Animated.View
-        className="absolute bg-white"
+      <Animated.View  
+        className="absolute bg-primary-soft"
         style={style1}
       />
       <Animated.View

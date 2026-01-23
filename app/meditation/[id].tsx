@@ -22,95 +22,103 @@ export default function MeditationDetails() {
   const meditation = meditations.find((m) => m.id === Number(id));
 
   const formatSeconds = (milliseconds: number) => {
+    milliseconds= Math.floor(milliseconds*1000);
     const minutes = Math.floor(milliseconds / 60000);
     const seconds = Math.floor((milliseconds % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
   if (!meditation) {
-    return <Text>Meditation not found!</Text>;
+    return (
+      <SafeAreaView className="bg-accent-soft flex-1 p-2 justify-center items-center">
+        <AnimatedBackground />
+        <Text className="text-3xl mt-20 text-center text-zinc-800 font-semibold">Meditation not found!</Text>
+      </SafeAreaView>
+    );
   }
+
+
 
   return (
     <SafeAreaView className="bg-accent-soft flex-1 p-2 justify-between">
-      
+
       {/* Page content */}
       <AnimatedBackground />
+      <View className="flex-1">
+        {/* Top part of the screen */}
         <View className="flex-1">
-          {/* Top part of the screen */}
-          <View className="flex-1">
-            {/* Header */}
-            <View className="flex-row items-center justify-between p-10">
-              {/* <AntDesign name="infocircleo" size={24} color="black" /> */}
-              <Ionicons name="information-circle-outline" size={24} color="black" />
+          {/* Header */}
+          <View className="flex-row items-center justify-between p-10">
+            {/* <AntDesign name="infocircleo" size={24} color="black" /> */}
+            <Ionicons name="information-circle-outline" size={24} color="black" />
 
-              <View className="bg-zinc-800 p-2 rounded-md">
-                <Text className="text-zinc-100 font-semibold">
-                  Today's meditation
-                </Text>
-              </View>
-
-              <Ionicons
-                onPress={() =>{
-                  router.back()
-                  status.playing && player.pause()
-                }}
-                name="close"
-                size={26}
-                color="black"
-              />
+            <View className="bg-zinc-800 p-2 rounded-md">
+              <Text className="text-zinc-100 font-semibold">
+                Today's meditation
+              </Text>
             </View>
 
-            <Text className="text-3xl mt-20 text-center text-zinc-800 font-semibold">
-              {meditation?.title}
-            </Text>
+            <Ionicons
+              onPress={() => {
+                router.back()
+                status.playing && player.pause()
+              }}
+              name="close"
+              size={26}
+              color="black"
+            />
           </View>
 
-          {/* Play/Pause Button */}
-          <Pressable
-            onPress={() => (player.playing ? player.pause() : player.play())}
-            className="bg-zinc-800 self-center w-20 aspect-square rounded-full items-center justify-center"
-          >
-            <FontAwesome6
-              name={status.playing ? 'pause' : 'play'}
-              size={24}
-              color="snow"
-            />
-          </Pressable>
+          <Text className="text-3xl mt-20 text-center text-zinc-800 font-semibold">
+            {meditation?.title}
+          </Text>
+        </View>
 
-          {/* Bottom part of the screen */}
-          <View className="flex-1">
-            {/* Footer: Player */}
-            <View className="p-5 mt-auto gap-5">
-              <View className="flex-row justify-between">
-                <MaterialIcons name="airplay" size={24} color="#3A3937" />
-                <MaterialCommunityIcons
-                  name="cog-outline"
-                  size={24}
-                  color="#3A3937"
-                />
-              </View>
-              {/* Playback indicator */}
-              <Slider
-                style={{ width: '100%', height: 3 }}
-                value={status.currentTime / status.duration}
-                onSlidingComplete={(value) =>
-                  player.seekTo(value * status.duration)
-                }
-                minimumValue={0}
-                maximumValue={1}
-                maximumTrackTintColor="#3A393755"
-                minimumTrackTintColor="#3A3937"
-                thumbTintColor="#3A3937"
+        {/* Play/Pause Button */}
+        <Pressable
+          onPress={() => (player.playing ? player.pause() : player.play())}
+          className="bg-zinc-800 self-center w-20 aspect-square rounded-full items-center justify-center"
+        >
+          <FontAwesome6
+            name={status.playing ? 'pause' : 'play'}
+            size={24}
+            color="snow"
+          />
+        </Pressable>
+
+        {/* Bottom part of the screen */}
+        <View className="flex-1">
+          {/* Footer: Player */}
+          <View className="p-5 mt-auto gap-5">
+            <View className="flex-row justify-between">
+              <MaterialIcons name="airplay" size={24} color="#3A3937" />
+              <MaterialCommunityIcons
+                name="cog-outline"
+                size={24}
+                color="#3A3937"
               />
-              {/* Times */}
-              <View className="flex-row justify-between">
-                <Text>{formatSeconds(status.currentTime)}</Text>
-                <Text>{formatSeconds(status.duration)}</Text>
-              </View>
+            </View>
+            {/* Playback indicator */}
+            <Slider
+              style={{ width: '100%', height: 3 }}
+              value={status.currentTime / status.duration}
+              onSlidingComplete={(value) =>
+                player.seekTo(value * status.duration)
+              }
+              minimumValue={0}
+              maximumValue={1}
+              maximumTrackTintColor="#3A393755"
+              minimumTrackTintColor="#3A3937"
+              thumbTintColor="#3A3937"
+            />
+            {/* Times */}
+            <View className="flex-row justify-between">
+              <Text>{formatSeconds(status.currentTime)}</Text>
+              <Text>{formatSeconds(status.duration)}</Text>
             </View>
           </View>
         </View>
+      </View>
     </SafeAreaView>
   );
 }
