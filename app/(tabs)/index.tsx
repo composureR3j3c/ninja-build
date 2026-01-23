@@ -157,7 +157,7 @@ export default function HomeScreen() {
                 `}
               >
                 <Text
-                  className={`font-medium ${isDone ? "font-bold text-gray-300" : "text-white"}`}
+                  className={` ${isDone ? "font-large font-bold text-gray-300" : "font-medium text-white"}`}
                 >
                   {isDone ? "✔️" : `+${XP_PER_ACTIVITY} XP`}
                 </Text>
