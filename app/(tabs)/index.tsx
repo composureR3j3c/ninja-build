@@ -5,60 +5,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Import 
 import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
 import { router } from "expo-router";
 import { MediationListItem } from "@/components/MeditationListItem";
-import { meditations } from "@/data";
+import { ACTIVITIES, meditations, MOODS } from "@/data";
+import { Mood } from "@/types";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
-
-type Mood =
-  | "calm"
-  | "stressed"
-  | "tired"
-  | "sad"
-  | "focused"
-  | "anxious"
-  | "unmotivated"
-  | "overwhelmed"
-  | "energetic"
-  | "lonely"
-  | "happy"
-  | "creative";
-const MOODS: { id: string; key: Mood; label: string; emoji: string }[] = [
-  { id: "1", key: "calm", label: "Calm", emoji: "😌" },
-  { id: "2", key: "stressed", label: "Stressed", emoji: "😣" },
-  { id: "3", key: "tired", label: "Tired", emoji: "😴" },
-  { id: "4", key: "sad", label: "Sad", emoji: "😔" },
-  { id: "5", key: "focused", label: "Focused", emoji: "🎯" },
-  { id: "6", key: "anxious", label: "Anxious", emoji: "😰" },
-  { id: "7", key: "unmotivated", label: "Unmotivated", emoji: "😕" },
-  { id: "8", key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫" },
-  { id: "9", key: "energetic", label: "Energetic", emoji: "⚡" },
-  { id: "10", key: "lonely", label: "Lonely", emoji: "🫂" },
-  { id: "11", key: "happy", label: "Happy", emoji: "😊" },
-  { id: "12", key: "creative", label: "Creative", emoji: "🎨" },
-];
-
-const ACTIVITIES: Record<Mood, string[]> = {
-  calm: ["Gratitude reflection", "Gentle breathing", "Body scan"],
-  stressed: ["Breathing reset", "Letting go", "Tension release"],
-  tired: ["Wake-up breathing", "Mindful stretch", "Energy reset"],
-  sad: ["Self-compassion", "Emotional check-in", "Kind thoughts"],
-  focused: ["Focus timer", "Clarity breathing", "Goal setting"],
-  anxious: [
-    "4-7-8 breathing",
-    "Grounding exercise (5-4-3-2-1)",
-    "Reassurance notes",
-  ],
-  unmotivated: ["2-minute rule", "Tiny task list", "Motivation boost audio"],
-  overwhelmed: ["Task dump", "Priority sorting", "Guided calm-down"],
-  energetic: [
-    "Quick workout",
-    "Creative brainstorm",
-    "Fast-paced focus sprint",
-  ],
-  lonely: ["Reach-out reminder", "Connection reflection", "Guided reassurance"],
-  happy: ["Positive journaling", "Share gratitude", "Celebrate wins"],
-  creative: ["Free writing", "Idea sketching", "Music-inspired creation"],
-};
 
 const XP_PER_ACTIVITY = 10;
 
@@ -199,19 +149,19 @@ export default function HomeScreen() {
           >
             <View className="flex-row justify-between items-center">
               <Text className="text-gray-900 font-medium">{activity}</Text>
-
-              <Pressable
-                // onPress={() => completeActivity(activity)}
+             
+              <View
+                
                 className={`rounded-full px-4 py-2 items-center justify-center w-28
-                  ${isDone ? "bg-gray-200" : "bg-primary"}
+                  ${isDone ? "bg-primary-soft" : "bg-primary"}
                 `}
               >
                 <Text
-                  className={`font-medium ${isDone ? "text-gray-500" : "text-white"}`}
+                  className={`font-medium ${isDone ? "font-bold text-gray-300" : "text-white"}`}
                 >
-                  {isDone ? "✓" : `+${XP_PER_ACTIVITY} XP`}
+                  {isDone ? "✔️" : `+${XP_PER_ACTIVITY} XP`}
                 </Text>
-              </Pressable>
+              </View>
             </View>
           </Pressable>
           

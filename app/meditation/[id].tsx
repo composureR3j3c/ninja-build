@@ -31,9 +31,9 @@ export default function MeditationDetails() {
   }
 
   return (
-    <SafeAreaView className="bg-orange-400 flex-1 p-2 justify-between">
-      <AnimatedBackground />
+    <SafeAreaView className="bg-accent-soft flex-1 p-2 justify-between">     
       {/* Page content */}
+      <AnimatedBackground />
       <View className="flex-1">
         {/* Top part of the screen */}
         <View className="flex-1">
@@ -48,7 +48,10 @@ export default function MeditationDetails() {
             </View>
 
             <AntDesign
-              onPress={() => router.back()}
+              onPress={() =>{
+                router.back()
+                status.playing && player.pause()
+              }}
               name="close"
               size={26}
               color="black"

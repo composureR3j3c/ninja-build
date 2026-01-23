@@ -35,7 +35,7 @@ export default function AnimatedBackground() {
     <View className="absolute top-0 bottom-0 left-0 right-0 items-center">
       {/* circles */}
       <Animated.View
-        className="absolute w-[400%] aspect-square rounded-full bg-primary-soft"
+        className="absolute w-[400%] aspect-square rounded-full bg-white"
         style={{ top: top1 }}
       />
       <Animated.View
