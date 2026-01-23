@@ -19,6 +19,11 @@ export default function SignupScreen() {
 
 
   const handleGoogleContinue = async () => {
+    console.log("Google continue pressed"+agreed);
+    if (!agreed) {
+      setShowError(true);
+      return;
+    }
     const result = await login();
         if (result) {
         // console.log("Login successful");
