@@ -3,6 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 interface SettingsItemProp {
   icon: any;
   title: string;
+  target?: any;
   onPress?: () => void;
   textStyle?: string;
   showArrow?: boolean;
@@ -11,20 +12,26 @@ interface SettingsItemProp {
 import { settings } from "@/constants/data";
 import { logout } from '@/lib/appwrite';
 import { useGlobalContext } from '@/lib/global-provider';
+import { router } from 'expo-router';
 
 const SettingsItem = ({
   icon,
   title,
+  target,
   onPress,
   textStyle,
   showArrow = true,
 }: SettingsItemProp) => (
   <TouchableOpacity
-    onPress={onPress}
+    onPress={()=>{
+     if(target){
+        router.push(target);
+      }
+    }}
     className="flex flex-row items-center justify-between py-3"
   >
     <View className="flex flex-row items-center gap-3">
-      <Image source={icon} className="size-6" />
+      <Image source={icon} className="size-6 text-black-300" />
       <Text className={`text-lg font-rubik-medium text-black-300 ${textStyle}`}>
         {title}
       </Text>
@@ -58,7 +65,7 @@ const Profile = () => {
         <View className="flex flex-row justify-center mt-5">
           <View className="flex flex-col items-center relative mt-5">
             <Image source={
-              // user?.avatar??
+              user?.avatar??
               require('@/assets/images/avatar.png')
             } className="size-44 relative rounded-full" />
             <TouchableOpacity className='absolute bottom-11'>
@@ -68,11 +75,11 @@ const Profile = () => {
           </View>
         </View>
         <View className="flex flex-col mt-10">
-          <SettingsItem icon={require('@/assets/icons/calendar.png')} title="My Bookings" />
-          <SettingsItem icon={require('@/assets/icons/wallet.png')} title="Payments" />
+          {/* <SettingsItem icon={require('@/assets/icons/calendar.png')} title="My Bookings" />
+          <SettingsItem icon={require('@/assets/icons/wallet.png')} title="Payments" /> */}
         </View>
-        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200">
-          {settings.slice(2).map((item, index) => (
+        <View className="flex flex-col mt-5 border-t pt-5 border-primary-200 ">
+          {settings.slice(0).map((item, index) => (
             <SettingsItem key={index} {...item} />
           ))}
         </View>

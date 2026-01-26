@@ -71,10 +71,18 @@ export const settings = [
   {
     title: "My Bookings",
     icon: icons.calendar,
+    onPress: () => {
+      console.log("My Bookings pressed");
+    },
   },
   {
-    title: "Payments",
-    icon: icons.wallet,
+    title: "Progress",
+    icon: icons.dumbell,  
+    target: "/progress",
+    onPress: () => {
+      console.log("My Progress pressed");
+
+    },
   },
   {
     title: "Profile",
