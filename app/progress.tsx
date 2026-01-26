@@ -37,8 +37,9 @@ export default function Progress() {
         <ScrollView className="flex-1 bg-background px-4 pt-10">
 
             {/* Hero Illustration */}
-            <View className="bg-brand-light mt-2 rounded-3xl p-6 shadow-sm mb-6 items-center">
-                <Text className="text-4xl mb-3">🧘‍♂️</Text>
+            <View className="bg-white mt-2 rounded-4xl p-6 shadow-sm mb-6 items-center">
+                <Text className="mb-3"
+                style={{ fontSize: 72 }}>🧘‍♂️</Text>
                 <Text className="text-xl font-rubik-semibold text-gray-900">
                     Your Inner Journey
                 </Text>
@@ -57,7 +58,7 @@ export default function Progress() {
             {/* Progress Card */}
             <View className="bg-white rounded-3xl p-6 shadow-sm mb-6">
                 <View className="flex-row items-center mb-4">
-                    <Text className="text-3xl mr-3">🌱</Text>
+                    <Text style={{ fontSize: 24 }} className=" mr-3">🌱</Text>
                     <View>
                         <Text className="text-lg font-semibold text-gray-900">
                             Growth Level
@@ -84,7 +85,7 @@ export default function Progress() {
             <View className="flex-row justify-between mb-6">
 
                 <View className="flex-1 bg-white rounded-2xl p-5 mr-3 shadow-sm items-center">
-                    <Text className="text-4xl mb-2">🔥</Text>
+                    <Text style={{ fontSize: 36 }} className=" mb-2">🔥</Text>
                     <Text className="text-lg font-semibold text-gray-900">
                         {activitiesCompleted}
                     </Text>
@@ -94,7 +95,7 @@ export default function Progress() {
                 </View>
 
                 <View className="flex-1 bg-white rounded-2xl p-5 ml-3 shadow-sm items-center">
-                    <Text className="text-4xl mb-2">🏔️</Text>
+                    <Text style={{ fontSize: 36 }} className=" mb-2">🏔️</Text>
                     <Text className="text-lg font-semibold text-gray-900">
                         Level {Math.floor(xp / LEVEL_XP) + 1}
                     </Text>
@@ -108,7 +109,7 @@ export default function Progress() {
             {/* Recent Activity Scene */}
             <View className="bg-white rounded-3xl p-6 shadow-sm mb-6">
                 <View className="flex-row items-center mb-4">
-                    <Text className="text-3xl mr-3">🌄</Text>
+                    <Text style={{ fontSize: 30 }}className=" mr-3">🌄</Text>
                     <Text className="text-lg font-rubik-semibold text-gray-900">
                         Recent Steps
                     </Text>
@@ -121,7 +122,7 @@ export default function Progress() {
                 ) : (
                     completed.map((activity, index) => (
                         <View key={index} className="flex-row items-center mb-3">
-                            <Text className="text-xl mr-3">✨</Text>
+                            <Text style={{ fontSize: 18 }} className=" mr-3">✨</Text>
                             <Text className="text-gray-700">{activity}</Text>
                         </View>
                     ))
@@ -129,8 +130,8 @@ export default function Progress() {
             </View>
 
             {/* Motivation Illustration */}
-            <View className="bg-white rounded-3xl p-6 shadow-sm items-center mb-8">
-                <Text className="text-5xl mb-3">🎯</Text>
+            <View className="bg-white rounded-3xl p-6 shadow-sm items-center mb-6">
+                <Text style={{ fontSize: 42 }} className=" mb-3">🎯</Text>
                 <Text className="text-center text-gray-700 font-medium">
                     Small habits. Big change.
                 </Text>
@@ -138,7 +139,7 @@ export default function Progress() {
                     Consistency shapes identity.
                 </Text>
             </View>
-
+<View className="h-20" /> {/* Spacer for bottom padding */}
         </ScrollView>
 
 

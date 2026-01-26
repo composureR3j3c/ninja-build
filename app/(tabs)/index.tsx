@@ -165,6 +165,7 @@ export default function HomeScreen() {
             </View>
           </Pressable>
           
+          
     
         );
       })}
@@ -175,6 +176,7 @@ export default function HomeScreen() {
       renderItem={({ item }) => <MediationListItem meditation={item} />}
       keyExtractor={(item) => item.id.toString()}
     /> */}
+    <View className="h-20" />
     </ScrollView>
   );
 }
