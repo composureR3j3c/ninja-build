@@ -1,113 +1,112 @@
 import {
   Client,
   Account,
-  ID,
   Databases,
-  OAuthProvider,
   Avatars,
-  Query,
   Storage,
-} from "react-native-appwrite";
+  OAuthProvider,
+  Query,
+} from "appwrite";
 import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
 
+// ------------------ CONFIG ------------------
 export const config = {
-  platform: "com.bex.restate",
-  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT,
-  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID,
-  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID,
+  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
+  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
+  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
   galleriesCollectionId:
-    process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID,
-  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID,
-  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID,
+    process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID!,
+  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!,
+  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID!,
   propertiesCollectionId:
-    process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID,
-  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID,
+    process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID!,
+  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID!,
 };
 
-export const client = new Client();
-client
-  .setEndpoint(config.endpoint!)
-  .setProject(config.projectId!)
-  .setPlatform(config.platform!);
+// ------------------ CLIENT ------------------
+export const client = new Client()
+  .setEndpoint(config.endpoint)
+  .setProject(config.projectId);
 
-export const avatar = new Avatars(client);
 export const account = new Account(client);
 export const databases = new Databases(client);
 export const storage = new Storage(client);
+export const avatar = new Avatars(client);
 
+// ------------------ OAUTH LOGIN ------------------
 export async function login() {
   try {
-    const redirectUri = Linking.createURL("/");
+    const redirectUri = Linking.createURL("auth-callback"); // deep link back to app
 
-    const response = await account.createOAuth2Token(
+    // Use JS SDK mobile-friendly method
+    const oauthUrl = account.createOAuth2Session(
       OAuthProvider.Google,
+      redirectUri,
       redirectUri
     );
-    if (!response) throw new Error("Create OAuth2 token failed");
 
-    const browserResult = await openAuthSessionAsync(
-      response.toString(),
-      redirectUri
-    );
-    if (browserResult.type !== "success")
-      throw new Error("Create OAuth2 token failed");
+    const browserResult = await openAuthSessionAsync(oauthUrl as string, redirectUri);
 
+    if (browserResult.type !== "success") {
+      throw new Error("OAuth login cancelled or failed");
+    }
+
+    // Parse the returned URL for session info
     const url = new URL(browserResult.url);
-    const secret = url.searchParams.get("secret")?.toString();
-    const userId = url.searchParams.get("userId")?.toString();
-    if (!secret || !userId) throw new Error("Create OAuth2 token failed");
+    const userId = url.searchParams.get("userId");
+    const secret = url.searchParams.get("secret");
 
-    const session = await account.createSession(userId, secret);
-    if (!session) throw new Error("Failed to create session");
+    if (!userId || !secret) {
+      throw new Error("Failed to get OAuth session data");
+    }
+
+    // Complete the session
+    await account.createSession(userId, secret);
 
     return true;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return false;
   }
 }
 
+// ------------------ LOGOUT ------------------
 export async function logout() {
   try {
-    const result = await account.deleteSession("current");
-    return result;
-  } catch (error) {
-    console.error(error);
+    return await account.deleteSessions();
+  } catch (err) {
+    console.error(err);
     return false;
   }
 }
 
+// ------------------ CURRENT USER ------------------
 export async function getCurrentUser() {
   try {
     const result = await account.get();
     if (result.$id) {
-      const userAvatar = avatar.getInitials(result.name);
-
-      return {
-        ...result,
-        avatar: userAvatar.toString(),
-      };
+      const userAvatar = avatar.getInitials(result.name || "");
+      return { ...result, avatar: userAvatar.toString() };
     }
-
     return null;
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.error(err);
     return null;
   }
 }
 
+// ------------------ PROPERTIES ------------------
 export async function getLatestProperties() {
   try {
     const result = await databases.listDocuments(
-      config.databaseId!,
-      config.propertiesCollectionId!,
+      config.databaseId,
+      config.propertiesCollectionId,
       [Query.orderAsc("$createdAt"), Query.limit(5)]
     );
-
     return result.documents;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return [];
   }
 }
@@ -122,10 +121,9 @@ export async function getProperties({
   limit?: number;
 }) {
   try {
-    const buildQuery = [Query.orderDesc("$createdAt")];
+    const buildQuery: any[] = [Query.orderDesc("$createdAt")];
 
-    if (filter && filter !== "All")
-      buildQuery.push(Query.equal("type", filter));
+    if (filter && filter !== "All") buildQuery.push(Query.equal("type", filter));
 
     if (query)
       buildQuery.push(
@@ -139,29 +137,28 @@ export async function getProperties({
     if (limit) buildQuery.push(Query.limit(limit));
 
     const result = await databases.listDocuments(
-      config.databaseId!,
-      config.propertiesCollectionId!,
+      config.databaseId,
+      config.propertiesCollectionId,
       buildQuery
     );
 
     return result.documents;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return [];
   }
 }
 
-// write function to get property by id
+// ------------------ GET PROPERTY BY ID ------------------
 export async function getPropertyById({ id }: { id: string }) {
   try {
-    const result = await databases.getDocument(
-      config.databaseId!,
-      config.propertiesCollectionId!,
+    return await databases.getDocument(
+      config.databaseId,
+      config.propertiesCollectionId,
       id
     );
-    return result;
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     return null;
   }
 }

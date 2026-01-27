@@ -23,8 +23,12 @@ const SettingsItem = ({
   showArrow = true,
 }: SettingsItemProp) => (
   <TouchableOpacity
-    onPress={()=>{
-     if(target){
+    onPress={() => {
+      if(onPress){
+        onPress();
+        // return;
+      }
+      if(target){
         router.push(target);
       }
     }}
@@ -44,6 +48,7 @@ const SettingsItem = ({
 const Profile = () => {
   const { user, refetch } = useGlobalContext();
   const handleLogout = async () => {
+    console.log("Logging out...");
     const result = await logout();
     if (result) {
       Alert.alert("Success", "Logged out successfully");
@@ -89,7 +94,7 @@ const Profile = () => {
             icon={require('@/assets/icons/logout.png')}
             title="Logout"
             textStyle="text-danger"
-            showArrow={false}
+            // showArrow={false}
             onPress={handleLogout}
           />
         </View>
