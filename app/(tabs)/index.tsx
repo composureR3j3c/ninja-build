@@ -9,6 +9,7 @@ import { router } from "expo-router";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
 import { useLanguage } from "@/src/context/LanguageProvider";
+import LanguageToggleButton from '@/src/components/LanguageToggleButton';
 
 
 
@@ -84,7 +85,7 @@ export default function HomeScreen() {
           <Text className="text-primary font-semibold">✨ {xp} XP</Text>
         </View>
       </View>
-
+      <LanguageToggleButton/>
       {/* Mood selector */}
       <View className="flex-row flex-wrap justify-evenly mb-8">
         {MOODS.map((mood) => {
@@ -105,7 +106,7 @@ export default function HomeScreen() {
                   ${active ? "text-primary" : "text-gray-700"}
                 `}
                 >
-                  {t(mood.labelKey as Mood ?? "calm")}
+                  {t(mood.labelKey as Mood)}
                 </Text>
               </Pressable>
             </ScaleWrapper>
