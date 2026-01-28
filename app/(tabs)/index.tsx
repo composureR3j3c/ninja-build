@@ -1,18 +1,21 @@
-import { useState } from "react";
-import { FlatList, Pressable, ScrollView, Text, View } from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import { useState } from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
 // import { useGlobalContext } from "@/lib/global-provider";
 import { ScaleWrapper } from "@/components/animated/ScaleWrapper";
+import { ACTIVITIES, MOODS } from "@/data";
+import { Mood,  } from "@/types";
 import { router } from "expo-router";
-import { MediationListItem } from "@/components/MeditationListItem";
-import { ACTIVITIES, meditations, MOODS } from "@/data";
-import { Mood } from "@/types";
 // import { useAppwrite } from "@/lib/useAppwrite";
 // import { getLatestProperties, getProperties } from "@/lib/appwrite";
+import { useLanguage } from "@/src/context/LanguageProvider";
+
+
 
 const XP_PER_ACTIVITY = 10;
 
 export default function HomeScreen() {
+  const { t } = useLanguage();
   const [selectedMood, setSelectedMood] = useState<Mood>("calm");
   const [xp, setXp] = useState(0);
   const [completed, setCompleted] = useState<string[]>([]);
@@ -102,7 +105,7 @@ export default function HomeScreen() {
                   ${active ? "text-primary" : "text-gray-700"}
                 `}
                 >
-                  {mood.label}
+                  {t(mood.labelKey as Mood ?? "calm")}
                 </Text>
               </Pressable>
             </ScaleWrapper>

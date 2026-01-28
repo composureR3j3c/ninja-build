@@ -1,7 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
-  content: ["./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./app/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./components/**/*.{js,jsx,ts,tsx}",
+  ],
   presets: [require("nativewind/preset")],
   theme: {
     extend: {
@@ -18,17 +22,16 @@ module.exports = {
         surface: "#FFFFFF", // cards
         border: "#DEDAD3", // soft divider
         tint: "#D97706", // vibrant orange
-        brand:{
+        brand: {
           DEFAULT: "#rgba(10, 21, 46, 0.85)", // deep navy
-          light: "#6d6c88", // light lavender  
-          dark: "#rgba(10, 21, 46,1)", // deeper navy 
+          light: "#6d6c88", // light lavender
+          dark: "#rgba(10, 21, 46,1)", // deeper navy
         },
-        primary:{
+        primary: {
           DEFAULT: "#D97706",
-          soft:"#FDE68A",
-          dark:"#B45309"
-
-        }, 
+          soft: "#FDE68A",
+          dark: "#B45309",
+        },
         text: {
           primary: "#1F1D1A", // ink black
           secondary: "#5C5853", // warm gray

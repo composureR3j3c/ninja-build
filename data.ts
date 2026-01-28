@@ -1,4 +1,4 @@
-import { Meditation, Mood } from './types';
+import { Meditation, Mood,  } from './types';
 
 export const meditations: Meditation[] = [
   {
@@ -87,19 +87,19 @@ export const meditations: Meditation[] = [
   }
   
 ];
-export const MOODS: { id: string; key: Mood; label: string; emoji: string }[] = [
-  { id: "1", key: "calm", label: "Calm", emoji: "😌" },
-  { id: "2", key: "stressed", label: "Stressed", emoji: "😣" },
-  { id: "3", key: "tired", label: "Tired", emoji: "😴" },
-  { id: "4", key: "sad", label: "Sad", emoji: "😔" },
-  { id: "5", key: "focused", label: "Focused", emoji: "🎯" },
-  { id: "6", key: "anxious", label: "Anxious", emoji: "😰" },
-  { id: "7", key: "unmotivated", label: "Unmotivated", emoji: "😕" },
-  { id: "8", key: "overwhelmed", label: "Overwhelmed", emoji: "😵‍💫" },
-  { id: "9", key: "energetic", label: "Energetic", emoji: "⚡" },
-  { id: "10", key: "lonely", label: "Lonely", emoji: "🫂" },
-  { id: "11", key: "happy", label: "Happy", emoji: "😊" },
-  { id: "12", key: "creative", label: "Creative", emoji: "🎨" },
+export const MOODS: { id: string; key: Mood; labelKey: Mood; emoji: string }[] = [
+  { id: "1", key: "calm", labelKey: "calm", emoji: "😌" },
+  { id: "2", key: "stressed", labelKey: "stressed", emoji: "😣" },
+  { id: "3", key: "tired", labelKey: "tired", emoji: "😴" },
+  { id: "4", key: "sad", labelKey: "sad", emoji: "😔" },
+  { id: "5", key: "focused", labelKey: "focused", emoji: "🎯" },
+  { id: "6", key: "anxious", labelKey: "anxious", emoji: "😰" },
+  { id: "7", key: "unmotivated", labelKey: "unmotivated", emoji: "😕" },
+  { id: "8", key: "overwhelmed", labelKey: "overwhelmed", emoji: "😵‍💫" },
+  { id: "9", key: "energetic", labelKey: "energetic", emoji: "⚡" },
+  { id: "10", key: "lonely", labelKey: "lonely", emoji: "🫂" },
+  { id: "11", key: "happy", labelKey: "happy", emoji: "😊" },
+  { id: "12", key: "creative", labelKey: "creative", emoji: "🎨" },
 ];
 export const ACTIVITIES: Record<Mood, string[]> = {
   calm: ["Gratitude reflection", "Gentle breathing", "Body scan"],

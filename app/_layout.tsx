@@ -3,17 +3,18 @@ import { SplashScreen, Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import "../global.css"
-import { DarkTheme, DefaultTheme,ThemeProvider } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useColorScheme } from 'react-native';
 import GlobalProvider from '@/lib/global-provider';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LanguageProvider } from '@/src/context/LanguageProvider';
 
 export const unstable_settings = {
   anchor: '(tabs)',
 };
 
 export default function RootLayout() {
-   const [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     "Rubik-Bold": require("../assets/fonts/Rubik-Bold.ttf"),
     "Rubik-ExtraBold": require("../assets/fonts/Rubik-ExtraBold.ttf"),
     "Rubik-Light": require("../assets/fonts/Rubik-Light.ttf"),
@@ -33,12 +34,13 @@ export default function RootLayout() {
     return null;
   }
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+    <LanguageProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <GlobalProvider>
           <Stack screenOptions={{ headerShown: false }}>
           </Stack>
-          
+
         </GlobalProvider>
-     </ThemeProvider>
+      </ThemeProvider></LanguageProvider>
   );
 }

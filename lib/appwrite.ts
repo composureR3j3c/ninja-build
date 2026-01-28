@@ -1,27 +1,31 @@
 import {
-  Client,
   Account,
-  Databases,
   Avatars,
-  Storage,
+  Client,
+  Databases,
   OAuthProvider,
   Query,
+  Storage,
 } from "appwrite";
+import Constants from "expo-constants";
 import * as Linking from "expo-linking";
 import { openAuthSessionAsync } from "expo-web-browser";
 
-// ------------------ CONFIG ------------------
+const extra = Constants.expoConfig?.extra?.appwrite;
+
+if (!extra) {
+  throw new Error("Missing Appwrite configuration");
+}
+
 export const config = {
-  endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
-  projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
-  databaseId: process.env.EXPO_PUBLIC_APPWRITE_DATABASE_ID!,
-  galleriesCollectionId:
-    process.env.EXPO_PUBLIC_APPWRITE_GALLERIES_COLLECTION_ID!,
-  reviewsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_REVIEWS_COLLECTION_ID!,
-  agentsCollectionId: process.env.EXPO_PUBLIC_APPWRITE_AGENTS_COLLECTION_ID!,
-  propertiesCollectionId:
-    process.env.EXPO_PUBLIC_APPWRITE_PROPERTIES_COLLECTION_ID!,
-  bucketId: process.env.EXPO_PUBLIC_APPWRITE_BUCKET_ID!,
+  endpoint: extra.endpoint,
+  projectId: extra.projectId,
+  databaseId: extra.databaseId,
+  galleriesCollectionId: extra.galleriesCollectionId,
+  reviewsCollectionId: extra.reviewsCollectionId,
+  agentsCollectionId: extra.agentsCollectionId,
+  propertiesCollectionId: extra.propertiesCollectionId,
+  bucketId: extra.bucketId,
 };
 
 // ------------------ CLIENT ------------------
@@ -37,16 +41,19 @@ export const avatar = new Avatars(client);
 // ------------------ OAUTH LOGIN ------------------
 export async function login() {
   try {
-    const redirectUri = Linking.createURL("auth-callback"); // deep link back to app
+    const redirectUri = Linking.createURL("/"); // deep link back to app
 
     // Use JS SDK mobile-friendly method
     const oauthUrl = account.createOAuth2Session(
       OAuthProvider.Google,
       redirectUri,
-      redirectUri
+      redirectUri,
     );
 
-    const browserResult = await openAuthSessionAsync(oauthUrl as string, redirectUri);
+    const browserResult = await openAuthSessionAsync(
+      oauthUrl as string,
+      redirectUri,
+    );
 
     if (browserResult.type !== "success") {
       throw new Error("OAuth login cancelled or failed");
@@ -102,7 +109,7 @@ export async function getLatestProperties() {
     const result = await databases.listDocuments(
       config.databaseId,
       config.propertiesCollectionId,
-      [Query.orderAsc("$createdAt"), Query.limit(5)]
+      [Query.orderAsc("$createdAt"), Query.limit(5)],
     );
     return result.documents;
   } catch (err) {
@@ -123,7 +130,8 @@ export async function getProperties({
   try {
     const buildQuery: any[] = [Query.orderDesc("$createdAt")];
 
-    if (filter && filter !== "All") buildQuery.push(Query.equal("type", filter));
+    if (filter && filter !== "All")
+      buildQuery.push(Query.equal("type", filter));
 
     if (query)
       buildQuery.push(
@@ -131,7 +139,7 @@ export async function getProperties({
           Query.search("name", query),
           Query.search("address", query),
           Query.search("type", query),
-        ])
+        ]),
       );
 
     if (limit) buildQuery.push(Query.limit(limit));
@@ -139,7 +147,7 @@ export async function getProperties({
     const result = await databases.listDocuments(
       config.databaseId,
       config.propertiesCollectionId,
-      buildQuery
+      buildQuery,
     );
 
     return result.documents;
@@ -155,7 +163,7 @@ export async function getPropertyById({ id }: { id: string }) {
     return await databases.getDocument(
       config.databaseId,
       config.propertiesCollectionId,
-      id
+      id,
     );
   } catch (err) {
     console.error(err);

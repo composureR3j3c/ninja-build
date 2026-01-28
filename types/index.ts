@@ -19,3 +19,5 @@ export type Mood =
   | "lonely"
   | "happy"
   | "creative";
+
+  
