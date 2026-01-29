@@ -99,7 +99,6 @@ export const MOODS: { id: string; key: Mood; labelKey: Mood; emoji: string }[] =
   { id: "9", key: "energetic", labelKey: "energetic", emoji: "⚡" },
   { id: "10", key: "lonely", labelKey: "lonely", emoji: "🫂" },
   { id: "11", key: "happy", labelKey: "happy", emoji: "😊" },
-  { id: "12", key: "creative", labelKey: "creative", emoji: "🎨" },
 ];
 export const ACTIVITIES: Record<Mood, string[]> = {
   calm: ["Gratitude reflection", "Gentle breathing", "Body scan"],
@@ -121,5 +120,4 @@ export const ACTIVITIES: Record<Mood, string[]> = {
   ],
   lonely: ["Reach-out reminder", "Connection reflection", "Guided reassurance"],
   happy: ["Positive journaling", "Share gratitude", "Celebrate wins"],
-  creative: ["Free writing", "Idea sketching", "Music-inspired creation"],
 };

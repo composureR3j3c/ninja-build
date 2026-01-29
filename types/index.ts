@@ -17,7 +17,6 @@ export type Mood =
   | "overwhelmed"
   | "energetic"
   | "lonely"
-  | "happy"
-  | "creative";
+  | "happy";
 
   
